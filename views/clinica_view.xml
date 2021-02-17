@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_root_clinica" name="Clinica" sequence="9" />
+    <menuitem id="menu_root_clinica_mascota_view"  name="Mascotas" parent="menu_root_clinica"/>
+    <menuitem id="menu_root_clinica_dueno_view"  name="Dueño" parent="menu_root_clinica"/>
+    <menuitem id="menu_root_clinica_recetas_view"  name="Recetas" parent="menu_root_clinica"/>
+    <menuitem id="menu_root_clinica_citas_view"  name="Citas" parent="menu_root_clinica"/>
+    <menuitem id="menu_root_clinica_veterinarios_view"  name="Veterinarios" parent="menu_root_clinica"/>
+    <menuitem id="menu_root_clinica_hospitalizacion_view" name="Hospitalizacion" parent="menu_root_clinica"/>
+
+    <menuitem id="menu_root_clinica_listar_mascota"  name="Listar mascotas" parent="menu_root_clinica_mascota_view" action="listar_mascota_action" />
+    <menuitem id="menu_root_clinica_listar_dueno"  name="Listar duenos" parent="menu_root_clinica_dueno_view" action="listar_dueno_action" />
+    <menuitem id="menu_root_clinica_listar_recetas"  name="Listar medicamentos" parent="menu_root_clinica_recetas_view" action="listar_recetas_action" />
+    <menuitem id="menu_root_clinica_listar_citas"  name="Listar citas" parent="menu_root_clinica_citas_view" action="listar_citas_action" groups="clinica_joan.group_veterinaria_cliente"/>
+    <menuitem id="menu_root_clinica_listar_veterinarios" name="Listar veterinarios"
+              parent="menu_root_clinica_veterinarios_view" action="listar_veterinarios_action" />
+    <menuitem id="menu_root_clinica_listar_hospitalizacion" name="Listar pacientes ingresados"
+              parent="menu_root_clinica_hospitalizacion_view" action="listar_hospitalizacion_action" />
+
+
+    <record model="ir.actions.act_window" id="listar_mascota_action">
+        <field name="name">Mascota</field>
+        <field name="res_model">clinica.mascota</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="listar_dueno_action">
+        <field name="name">Dueños</field>
+        <field name="res_model">clinica.dueno</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="listar_recetas_action">
+        <field name="name">Medicamentos</field>
+        <field name="res_model">clinica.recetas</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="listar_citas_action">
+        <field name="name">Citas</field>
+        <field name="res_model">clinica.citas</field>
+        <field name="view_mode">tree,form,kanban,calendar</field>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="listar_citas_action_calendario">
+        <field name="act_window_id" ref="listar_citas_action"/>
+        <field name="view_id" ref="clinica_joan.view_clinica_citas_calendar"/>
+        <field name="view_mode">calendar</field>
+        <field name="sequence" eval="2"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="listar_citas_action_kanban">
+        <field name="act_window_id" ref="listar_citas_action"/>
+        <field name="view_id" ref="clinica_joan.view_clinica_citas_kanban"/>
+        <field name="view_mode">kanban</field>
+        <field name="sequence" eval="3"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="listar_veterinarios_action">
+        <field name="name">Veterinarios</field>
+        <field name="res_model">clinica.veterinarios</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="listar_hospitalizacion_action">
+        <field name="name">Hospitalizacion</field>
+        <field name="res_model">clinica.hospitalizacion</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_clinica_citas_tree">
+        <field name="name">view.clinica.citas.tree</field>
+        <field name="model">clinica.citas</field>
+        <field name="arch" type="xml">
+            <tree class="table" string="Idea list">
+                <field name="name"/>
+                <field name="chip"/>
+                <field name="veterinario"/>
+                <field name="inicio"/>
+                <field name="fin"/>
+                <field name="nivel"/>
+                <field name="description"/>
+                <field name="estado"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_citas_form">
+        <field name='name'>view.clinica.citas.form</field>
+        <field name="model">clinica.citas</field>
+        <field name="arch" type="xml">
+            <form string="citas form" version="7.0">
+                <header>
+                    <button name="recordatorio_cita" string="Enviar cita" type="object"/>
+                </header>
+                <sheet>
+                    <group colspan="2" col="2">
+                        <group>
+                            <field class="form-control" name="name"/>
+                            <field name="chip"/>
+                            <field name="veterinario"/>
+                            <field name="inicio"/>
+                            <field name="fin"/>
+                            <field name="nivel"/>
+                            <field name="description"/>
+                            <field name="estado"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_citas_kanban">
+        <field name="name">view.clinica.citas.kanban</field>
+        <field name="model">clinica.citas</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="estado">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div
+                                t-attf-class="oe_kanban_color_blue
+                                              oe_kanban_global_click_edit oe_semantic_html_override
+                                              oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                            <div class="oe_dropdown_kanban">
+                                <!-- dropdown menu -->
+                                <div class="oe_dropdown_toggle">
+                                    <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                    <ul class="oe_dropdown_menu">
+                                        <li>
+                                            <a type="delete">Borrar</a>
+                                        </li>
+                                        <li>
+                                            <a type="edit">Editar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                            <div t-attf-class="oe_kanban_content">
+                                <!-- title -->
+                                Nº de Cita:
+                                <field name="name"/>
+                                <br/>
+                                Fecha:
+                                <field name="inicio"/>
+                                <br/>
+                                Nivel:
+                                <field name="nivel"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_citas_calendar">
+        <field name='name'>view.clinica.citas.calendar</field>
+        <field name="model">clinica.citas</field>
+        <field name="arch" type="xml">
+            <calendar date_start="inicio" date_stop="fin">
+                    <field name="name"/>
+                    <field name="chip"/>
+                    <field name="veterinario"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_veterinarios_tree">
+        <field name="name">view.clinica.veterinarios.tree</field>
+        <field name="model">clinica.veterinarios</field>
+        <field name="arch" type="xml">
+            <tree string="Idea list">
+                <field class="form-control" name="name"/>
+                <field class="form-control" name="titulo"/>
+                <field class="form-control" name="numero"/>
+                <field class="form-control" name="mail"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_veterinarios_form">
+        <field name='name'>view.clinica.veterinarios.form</field>
+        <field name="model">clinica.veterinarios</field>
+        <field name="arch" type="xml">
+            <form string="veterinarios form" version="7.0">
+                <sheet>
+                    <group colspan="2" col="2">
+                        <group>
+                            <field name="name"/>
+                            <field name="titulo"/>
+                            <field name="numero"/>
+                            <field name="mail"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_recetas_tree">
+        <field name="name">view.clinica.recetas.tree</field>
+        <field name="model">clinica.recetas</field>
+        <field name="arch" type="xml">
+            <tree string="Idea list">
+              <field name="name"/>
+              <field name="medic"/>
+              <field name="caduca"/>
+              <field name="provedor"/>
+              <field name="precio"/>
+              <field name="unidades"/>
+              <field name="iva"/>
+              <field name="total"/>
+              <field name="chip"/>
+              <field name="cita"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_recetas_form">
+        <field name='name'>view.clinica.recetas.form</field>
+        <field name="model">clinica.recetas</field>
+        <field name="arch" type="xml">
+            <form string="recetas form" version="7.0">
+                <sheet>
+                    <group colspan="2" col="2">
+                        <group>
+                            <field name="name"/>
+                            <field name="medic"/>
+                            <field name="caduca"/>
+                            <field name="provedor"/>
+                            <field name="precio"/>
+                            <field name="iva"/>
+                            <field name="total"/>
+                            <field name="unidades"/>
+                            <field name="chip"/>
+                            <field name="cita"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_mascota_tree">
+        <field name="name">view.clinica.mascota.tree</field>
+        <field name="model">clinica.mascota</field>
+        <field name="arch" type="xml">
+            <tree string="Idea list">
+                <field name="foto" widget="image"/>
+              <field name="name"/>
+              <field name="nombre"/>
+              <field name="sexo"/>
+              <field name="date"/>
+              <field name="fecha"/>
+              <field name="ndueno"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_mascota_form">
+        <field name='name'>view.clinica.mascota.form</field>
+        <field name="model">clinica.mascota</field>
+        <field name="arch" type="xml">
+            <form string="mascota form" version="7.0">
+                <sheet>
+                    <group colspan="2" col="2">
+                        <group>
+                            <field name="foto" widget="image"/>
+                            <field name="name"/>
+                            <field name="nombre"/>
+                            <field name="sexo"/>
+                            <field name="ndueno"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="fecha"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Descripcion">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_dueno_form">
+        <field name='name'>view.clinica.dueno.form</field>
+        <field name="model">clinica.dueno</field>
+        <field name="arch" type="xml">
+            <form string="dueno form" version="7.0">
+                <sheet>
+                    <group colspan="2" col="2">
+                        <group>
+                            <field name="name"/>
+                            <field name="nombre"/>
+                            <field name="telefono"/>
+                            <field name="email"/>
+                            <field name="direccion"/>
+                        </group>
+                        <group>
+                            <field name="carta"/>
+                            <field name="mail"/>
+                        </group>
+                        <group>
+                            <field name="nacido"/>
+                            <field name="edad"/>
+                            <field name="usuario"/>
+                            <field name="private_notes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_dueno_tree">
+        <field name="name">view.clinica.dueno.tree</field>
+        <field name="model">clinica.dueno</field>
+        <field name="arch" type="xml">
+            <tree string="Dueños">
+                <field name="name"/>
+                <field name="nombre"/>
+                <field name="telefono"/>
+                <field name="email"/>
+                <field name="direccion"/>
+                <field name="mail"/>
+                <field name="carta"/>
+                <field name="nacido"/>
+                <field name="edad"/>
+                <field name="usuario"/>
+                <field name="private_notes"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_hospitalizacion_form">
+        <field name='name'>view.clinica.hospitalizacion.form</field>
+        <field name="model">clinica.hospitalizacion</field>
+        <field name="arch" type="xml">
+            <form string="hospitalizacion form" version="7.0">
+                <sheet>
+                    <group colspan="2" col="2">
+                        <group>
+                            <field name="name"/>
+                            <field name="fechaHosp"/>
+                            <field name="paciente"/>
+                            <field name="nivel"/>
+                        </group>
+                        <group>
+                            <field name="fechaAlta"/>
+                            <field name="razon"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_clinica_hospitalizacion_tree">
+        <field name="name">view.clinica.hospitalizacion.tree</field>
+        <field name="model">clinica.hospitalizacion</field>
+        <field name="arch" type="xml">
+            <tree string="Hospitalizacion">
+                <field name="name"/>
+                <field name="fechaHosp"/>
+                <field name="paciente"/>
+                <field name="nivel"/>
+                <field name="fechaAlta"/>
+                <field name="razon"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

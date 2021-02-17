@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="report_receta" model="ir.actions.report">
+        <field name="name">Informe Receta</field>
+        <field name="model">clinica.recetas</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">clinica_joan.report_receta_view</field>
+        <field name="report_file">clinica_joan.report_receta</field>
+        <field name="binding_model_id" ref="clinica_joan.model_clinica_recetas"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_receta_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <h2 t-field="doc.name"/>
+                        <p>Paciente <span t-field="doc.chip"/></p>
+                        <p>Cita <span t-field="doc.cita"/></p>
+                        <h3>Medicación:</h3>
+                        <ul>
+                            <li><span t-field="doc.medic"/></li>
+                            <li><span t-field="doc.caduca"/></li>
+                            <li><span t-field="doc.unidades"/></li>
+                        </ul>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

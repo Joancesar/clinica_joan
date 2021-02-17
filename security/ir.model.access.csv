@@ -1,0 +1,10 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+mascota_clientes,mascota clientes,model_clinica_mascota,group_veterinaria_cliente,1,0,0,0
+dueno_clientes,dueno clientes,model_clinica_dueno,group_veterinaria_cliente,1,0,0,0
+citas_clientes,citas clientes,model_clinica_citas,group_veterinaria_cliente,1,0,0,0
+mascota_admin,mascota admin,model_clinica_mascota,group_veterinaria_manager,1,1,1,1
+dueno_admin,dueno admin,model_clinica_dueno,group_veterinaria_manager,1,1,1,1
+recetas_admin,recetas admin,model_clinica_recetas,group_veterinaria_manager,1,1,1,1
+veterinarios_admin,veterinarios admin,model_clinica_veterinarios,group_veterinaria_manager,1,1,1,1
+citas_admin,citas admin,model_clinica_citas,group_veterinaria_manager,1,1,1,1
+hospitalizacion_admin,hospitalizacion admin,model_clinica_hospitalizacion,group_veterinaria_manager,1,1,1,1

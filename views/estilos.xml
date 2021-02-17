@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <template id="assets_backend" name="clinica_joan assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/clinica_joan/static/src/css/estilos.css"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

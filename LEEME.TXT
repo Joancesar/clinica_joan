@@ -1,0 +1,9 @@
+Cambios hechos:
+
+Se han añadido los modelos Citas y Veterinarios, con sus respectivas vistas tree y form.
+
+Se ha modificado el modelo mascota para que se le pueda añadir una imagen y esta se vea en las vistas.
+El modelo Recetas tiene un nuevo campo relacional con el modelo Cita (Nº Cita asociado)
+Se ha creado una secuencia (id autogenerado) para utilizarlo como id en las Citas
+
+El modelo Cita tiene un campo relacional con Veterinarios (Nombre del veterinario que atendio)

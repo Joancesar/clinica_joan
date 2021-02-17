@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="recordatorio_cita" model="mail.template">
+        <field name="name">Recordatorio cita</field>
+        <field name="email_from">joancesar@hotmail.com</field>
+        <field name="email_to">${object.chip.ndueno.usuario.email}</field>
+        <field name="subject">Recordatorio cita</field>
+        <field name="model_id" ref="clinica_joan.model_clinica_citas"/>
+        <field name="body_html">
+            <![CDATA[
+                <p>Querido ${object.chip.ndueno.nombre},</p>
+                <p>Los datos de cita son los siguientes:
+                    <b>${object.name}</b>
+                    Fecha: ${format_date(object.inicio)}
+                    <br/>
+                </p>
+                <p>Saludos,
+                    <br/>
+                    Veterinario ${object.veterinario.name}
+                </p>
+            ]]>
+        </field>
+    </record>
+</odoo>
