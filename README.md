@@ -1,2 +1,2 @@
 # clinica_joan
-Modulo de Odoo con el que podras organizar tus citas y demas logistica de tu Clinica Veterinaria
+Módulo de Odoo con el que podrás organizar tus citas y demás logística de tu Clínica Veterinaria
